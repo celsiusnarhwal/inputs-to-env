@@ -1,0 +1,20 @@
+name: Inputs to Environment Variables
+description: Access inputs as environment variables from composite actions and workflows
+branding:
+  icon: refresh-cw
+  color: gray-dark
+
+runs:
+  using: composite
+  steps:
+    - name: Dump Inputs to Environment
+      shell: python
+      # language=python
+      run: |
+        import json
+        import os
+        
+        inputs = json.loads(os.getenv("INPUTS"))
+        
+        for key, value in inputs.items():
+            print(f"INPUT_{key.replace('-', '_').upper()}={value}", file=open(os.getenv("GITHUB_ENV"), "a"))
